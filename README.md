@@ -633,7 +633,7 @@ cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_SYSTEM_NAME=Linux
 make -j$(nproc) && make install
 ```
 
-#kwin
+# kwin
 ```
 cd && cd Plasma-6.5.2
 
@@ -641,7 +641,7 @@ pkg in xwayland
 pkg in libxcvt libdisplay-info libwayland-protocols
 ```
 
-#Kwin_X11
+# Kwin_X11
 ```
 tar -xf kwin-x11-6.5.2.tar.xz
 cd kwin-x11-6.5.2
@@ -726,6 +726,17 @@ cd && cd Plasma-6.5.2
 wget -O kded-6.22.0.tar.gz https://github.com/KDE/kded/archive/refs/tags/v6.22.0.tar.gz
 tar -xf kded-6.22.0.tar.gz
 cd kded-6.22.0
+mkdir build && cd build
+cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux   -DBUILD_TESTING=OFF   -DBUILD_WITH_QT6=ON
+make -j$(nproc)
+make install
+```
+# Knewstuff
+```
+cd && cd Plasma-6.5.2
+wget -O knewstuff-6.22.0.tar.gz https://github.com/KDE/knewstuff/archive/refs/tags/v6.22.0.tar.gz
+tar -xf knewstuff-6.22.0.tar.gz
+cd knewstuff-6.22.0
 mkdir build && cd build
 cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux   -DBUILD_TESTING=OFF   -DBUILD_WITH_QT6=ON
 make -j$(nproc)
@@ -1011,8 +1022,10 @@ nano ../kcms/CMakeLists.txt
 ```
 #nano ../kcms/tablet/CMakeLists.txt
 #find and comment PkgConfig::LIBWACOM
-nan
-o ../applets/taskmanager/CMakeLists.txt
+```
+## ⚠️ update file
+```
+nano ../applets/taskmanager/CMakeLists.txt
 #find and comment KSysGuard::ProcessCore
 ```
 ## ⚠️ update file (ignore)
