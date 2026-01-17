@@ -2,168 +2,36 @@
 - Build Process is based from My_kde_v2.sh
 - My_kde.sh and  My_kde_v2.sh are for just notes
 
-Image 1 | Image 2 | Image 2
-:-------------------------:|:-------------------------:|:-------------------------:
-![images/Screenshot_2026-01-16-17-17-28-275_com.termux.x11.jpg](images/Screenshot_2026-01-16-17-17-28-275_com.termux.x11.jpg)  |  ![images/Screenshot_2026-01-16-17-18-19-489_com.termux.x11.jpg](images/Screenshot_2026-01-16-17-18-19-489_com.termux.x11.jpg) |![images/Screenshot_2026-01-17-20-36-42-522_com.termux.x11.jpg](images/Screenshot_2026-01-17-20-36-42-522_com.termux.x11.jpg)
+Image 1             |  Image 2
+:-------------------------:|:-------------------------:
+![images/Screenshot_2026-01-16-17-17-28-275_com.termux.x11.jpg](images/Screenshot_2026-01-16-17-17-28-275_com.termux.x11.jpg)  |  ![images/Screenshot_2026-01-16-17-18-19-489_com.termux.x11.jpg](images/Screenshot_2026-01-16-17-18-19-489_com.termux.x11.jpg)
 # Usage
 ```
 termux-x11 :1 -xstartup "dbus-launch --exit-with-session plasma_session"
 ```
 
-# Applications (Not Direct Access Yet)
-```
-Open App Launcher > Search "dolphin" > Click in Results "Run dolphin"
-```
-
-# Hardware Acceleration
-[LinuxDroidMaster / Termux-Desktops](https://github.com/LinuxDroidMaster/Termux-Desktops/blob/main/Documentation/HardwareAcceleration.md)
-
-[sabamdarif / termux-desktop](https://github.com/sabamdarif/termux-desktop/blob/main/docs/hw-acceleration.md)
-
 # Build Process Below
-- Some of them Require File Editing (Commenting)
+- below order need to update but still works
 
 # Prerequisites
-## termux-packages
 ```
 termux-change-repo
 pkg update && pkg upgrade
 
 pkg i wget curl git nano vim htop tar unzip openssh tmux
-pkg install x11-repo tur-repo
-
-pkg install build-essential extra-cmake-modules ninja mesa mesa-dev libglvnd-dev libwayland-protocols vulkan-headers jq libcap boost boost-headers xorgproto libxss sdl2 pulseaudio vlc vlc-qt
-
-#pkg i xorg-*
-pkg install \
-  xorg-xrandr \
-  xorg-xsetroot \
-  #xorg-xset \
-  #xorg-xinput \
-  xorg-xkbcomp \
-  xkeyboard-config
-
-#pkg i xdg-*
-pkg install xdg-utils \
-  #xdg-user-dirs
-
-pkg install termux-x11-nightly dbus
-
-pkg in xwayland libxcvt libdisplay-info libwayland-protocols itstool gsettings-desktop-schemas duktape libduktape gobject-introspection g-ir-scanner kirigami-addons
-
-pip install setuptools
-pip install meson
-
-
-pkg in docbook-xml
-pkg in docbook-xsl
-cpan install URI::Escape
-
-pkg install sassc
-pkg in pycairo
-
-# pkg i qt6-*
-pkg install \
-  qt6-qtbase \
-  qt6-qtdeclarative \
-  qt6-qtsvg \
-  qt6-qttools \
-  qt6-qtmultimedia \
-  qt6-qtwayland \
-  qt6-qtwebengine \
-  qt6-qtimageformats \
-  qt6-qt5compat \
-  qt6-qtbase-gtk-platformtheme
-
-pkg i qcoro qcoro-static layer-shell-qt libplasma spirv-tools
-
-# pkg i kf6-*
-pkg i kf6-attica kf6-baloo kf6-breeze-icons kf6-breeze-icons-data \
-    kf6-karchive kf6-kauth kf6-kbookmarks kf6-kcmutils kf6-kcodecs \
-    kf6-kcolorscheme kf6-kcompletion kf6-kconfig kf6-kconfigwidgets \
-    kf6-kcontacts kf6-kcoreaddons kf6-kcrash kf6-kdbusaddons \
-    kf6-kdeclarative kf6-kdnssd kf6-kfilemetadata kf6-kglobalaccel \
-    kf6-kguiaddons kf6-kholidays kf6-ki18n kf6-kiconthemes kf6-kidletime \
-    kf6-kio kf6-kirigami kf6-kitemmodels kf6-kitemviews kf6-kjobwidgets \
-    kf6-knewstuff kf6-knotifications kf6-knotifyconfig kf6-kpackage \
-    kf6-kparts kf6-kpeople kf6-kpty kf6-kservice kf6-kstatusnotifieritem \
-    kf6-ksvg kf6-ktexteditor kf6-ktextwidgets kf6-kuserfeedback kf6-kwallet \
-    kf6-kwidgetsaddons kf6-kwindowsystem kf6-kxmlgui kf6-prison kf6-purpose \
-    kf6-qqc2-desktop-style kf6-solid kf6-sonnet kf6-syndication \ 
-    kf6-syntax-highlighting kf6-threadweaver
-
-# pkg i kde*
-pkg i ark dolphin elisa extra-cmake-modules kate \
-    kcalc kde-cli-tools kdeconnect kdegraphics-mobipocket \
-    kdenlive konsole kpipewire kweather libkexiv2 phonon-qt6 \
-    plasma-activities plasma-activities-stats plasma-wayland-protocols spectacle
+pkg i x11-repo tur-repo
+pkg i termux-x11-nightly dbus
+pkg in kf6* qt6* build-essential extra-cmake-modules ninja mesa mesa-dev libglvnd-dev libwayland-protocols vulkan-headers plasma-wayland-protocols jq libcap boost boost-headers xorgproto libxss sdl2
+pkg i pulseaudio
 ```
-# kde-plasma
 ```
 mkdir Plasma-6.5.2 && cd Plasma-6.5.2
 url=https://download.kde.org/stable/plasma/6.5.2/
 wget -r -nH -nd -A '*.xz' -np $url
 ```
-
-# qtpositioning (ignore: termux-package)
+# layer-shell-qt
 ```
-cd && cd Plasma-6.5.2
-wget -O qtpositioning-6.10.1.tar.gz https://github.com/qt/qtpositioning/archive/refs/tags/v6.10.1.tar.gz
-tar -xf qtpositioning-6.10.1.tar.gz
-cd qtpositioning-6.10.1
-mkdir build && cd build
-cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux -G Ninja
-ninja -j$(nproc)
-ninja install
-```
-
-# qtlocation
-```
-cd && cd Plasma-6.5.2
-wget -O qtlocation-6.10.1.tar.gz https://github.com/qt/qtlocation/archive/refs/tags/v6.10.1.tar.gz
-tar -xf qtlocation-6.10.1.tar.gz
-cd qtlocation-6.10.1
-mkdir build && cd build
-cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux -G Ninja
-ninja -j$(nproc)
-ninja install
-```
-
-# Qcoro (ignore: termux-package)
-```
-cd && cd Plasma-6.5.2
-wget -O qcoro-0.12.0.tar.gz https://github.com/qcoro/qcoro/archive/refs/tags/v0.12.0.tar.gz
-tar -xf qcoro-0.12.0.tar.gz
-cd qcoro-0.12.0
-mkdir build && cd build
-cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux -G Ninja
-ninja -j$(nproc)
-ninja install
-```
-
-# qtspeech (ignore: termux-package)
-```
-cd && cd Plasma-6.5.2
-wget -O qtspeech-6.10.1.tar.gz https://github.com/qt/qtspeech/archive/refs/tags/v6.10.1.tar.gz
-tar -xf qtspeech-6.10.1.tar.gz
-cd qtspeech-6.10.1
-mkdir build && cd build
-cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux   -DBUILD_TESTING=OFF -G Ninja
-make -j$(nproc)
-make install
-ninja install
-```
-
-# Qtsensors
-```
-cd && cd Plasma-6.5.2
-wget -O qtsensors-6.10.1.tar.gz https://github.com/qt/qtsensors/archive/refs/tags/v6.10.1.tar.gz
-tar -xf qtsensors-6.10.1.tar.gz
-cd qtsensors-6.10.1
-mkdir build && cd build
-cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux   -DBUILD_TESTING=OFF  -G Ninja
-ninja -j$(nproc)
-ninja install
+pkg in layer-shell-qt
 ```
 
 # kwayland
@@ -199,7 +67,7 @@ make -j$(nproc)
 make install
 ```
 
-# plasma-activities (ignore: termux-package)
+# plasma-activities
 ```
 cd && cd Plasma-6.5.2
 tar -xf plasma-activities-6.5.2.tar.xz
@@ -210,7 +78,7 @@ make -j$(nproc)
 make install
 ```
 
-# plasma-activities-stats (ignore: termux-package)
+# plasma-activities-stats
 ```
 cd && cd Plasma-6.5.2
 tar -xf plasma-activities-stats-6.5.2.tar.xz
@@ -221,7 +89,7 @@ make -j$(nproc)
 make install
 ```
 
-# kidletime (ignore: termux-package)
+# kidletime
 ```
 cd && cd Plasma-6.5.2
 wget -O kidletime-6.22.0.tar.gz https://github.com/KDE/kidletime/archive/refs/tags/v6.22.0.tar.gz
@@ -256,7 +124,7 @@ make -j$(nproc)
 make install
 ```
 
-# kcmutils (ignore: termux-package)
+# kcmutils
 ```
 cd && cd Plasma-6.5.2
 wget -O kcmutils-6.22.0.tar.gz https://github.com/KDE/kcmutils/archive/refs/tags/v6.22.0.tar.gz
@@ -268,7 +136,7 @@ make -j$(nproc)
 make install
 ```
 
-# ksvg (ignore: termux-package)
+# ksvg
 ```
 cd && cd Plasma-6.5.2
 wget -O ksvg-6.22.0.tar.gz https://github.com/KDE/ksvg/archive/refs/tags/v6.22.0.tar.gz
@@ -332,6 +200,11 @@ make install
 # kdoctools
 ```
 cd && cd Plasma-6.5.2
+
+pkg in docbook-xml
+pkg in docbook-xsl
+cpan install URI::Escape
+
 wget -O kdoctools-6.22.0.tar.gz https://github.com/KDE/kdoctools/archive/refs/tags/v6.22.0.tar.gz
 tar -xf kdoctools-6.22.0.tar.gz
 cd kdoctools-6.22.0
@@ -344,7 +217,43 @@ make -j$(nproc)
 make install
 ```
 
-# libplasma (ignore: termux-package)
+# qtpositioning
+```
+cd && cd Plasma-6.5.2
+wget -O qtpositioning-6.10.1.tar.gz https://github.com/qt/qtpositioning/archive/refs/tags/v6.10.1.tar.gz
+tar -xf qtpositioning-6.10.1.tar.gz
+cd qtpositioning-6.10.1
+mkdir build && cd build
+cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux -G Ninja
+ninja -j$(nproc)
+ninja install
+```
+
+# qtlocation
+```
+cd && cd Plasma-6.5.2
+wget -O qtlocation-6.10.1.tar.gz https://github.com/qt/qtlocation/archive/refs/tags/v6.10.1.tar.gz
+tar -xf qtlocation-6.10.1.tar.gz
+cd qtlocation-6.10.1
+mkdir build && cd build
+cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux -G Ninja
+ninja -j$(nproc)
+ninja install
+```
+
+# Qcoro
+```
+cd && cd Plasma-6.5.2
+wget -O qcoro-0.12.0.tar.gz https://github.com/qcoro/qcoro/archive/refs/tags/v0.12.0.tar.gz
+tar -xf qcoro-0.12.0.tar.gz
+cd qcoro-0.12.0
+mkdir build && cd build
+cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux -G Ninja
+ninja -j$(nproc)
+ninja install
+```
+
+# libplasma
 ```
 cd && cd Plasma-6.5.2
 wget -O libplasma-6.5.2.tar.gz https://github.com/KDE/libplasma/archive/refs/tags/v6.5.2.tar.gz
@@ -356,7 +265,7 @@ make -j$(nproc)
 make install
 ```
 
-# kstatusnotifieritem (ignore: termux-package)
+# kstatusnotifieritem
 ```
 cd && cd Plasma-6.5.2
 wget -O kstatusnotifieritem-6.22.0.tar.gz https://github.com/KDE/kstatusnotifieritem/archive/refs/tags/v6.22.0.tar.gz
@@ -368,7 +277,7 @@ make -j$(nproc)
 make install
 ```
 
-# kdnssd (ignore: termux-package)
+# kdnssd
 ```
 cd && cd Plasma-6.5.2
 wget -O kdnssd-6.22.0.tar.gz https://github.com/KDE/kdnssd/archive/refs/tags/v6.22.0.tar.gz
@@ -380,7 +289,7 @@ make -j$(nproc)
 make install
 ```
 
-# syntax-highlighting (ignore: termux-package)
+# syntax-highlighting
 ```
 cd && cd Plasma-6.5.2
 wget -O syntax-highlighting-6.22.0.tar.gz https://github.com/KDE/syntax-highlighting/archive/refs/tags/v6.22.0.tar.gz
@@ -398,9 +307,14 @@ cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE
 make -j$(nproc)
 make install
 ```
-# libproxy (ignore: termux-package)
+# libproxy
 ```
 cd && cd Plasma-6.5.2
+
+pkg in gsettings-desktop-schemas
+pkg in duktape libduktape gobject-introspection g-ir-scanner
+pip install meson
+
 git clone https://github.com/libproxy/libproxy
 cd libproxy
 meson setup builddir   --prefix=$PREFIX -Dvapi=false -Ddocs=false -Dintrospection=false
@@ -408,7 +322,7 @@ meson compile -C builddir
 meson install -C builddir
 ```
 
-# libkexiv2 (ignore: termux-package)
+# libkexiv2
 ```
 cd && cd Plasma-6.5.2
 wget https://download.kde.org/stable/release-service/25.08.3/src/libkexiv2-25.08.3.tar.xz
@@ -420,7 +334,7 @@ make -j$(nproc)
 make install
 ```
 
-# Phonon (ignore: termux-package)
+# Phonon
 ```
 cd && cd Plasma-6.5.2
 
@@ -435,7 +349,7 @@ make -j$(nproc)
 make install
 ```
 
-# kio-extras (ignore: termux-package)
+# kio-extras
 ```
 cd && cd Plasma-6.5.2
 
@@ -473,7 +387,7 @@ make -j$(nproc)
 make install
 ```
 
-# Kparts (ignore: termux-package)
+# Kparts
 ```
 cd && cd Plasma-6.5.2
 wget -O kparts-6.22.0.tar.gz https://github.com/KDE/kparts/archive/refs/tags/v6.22.0.tar.gz
@@ -497,7 +411,7 @@ make -j$(nproc)
 make install
 ```
 
-# Prison (ignore: termux-package)
+# Prison
 ```
 cd && cd Plasma-6.5.2
 
@@ -512,7 +426,20 @@ make -j$(nproc)
 make install
 ```
 
-# ktexteditor (ignore: termux-package)
+# qtspeech
+```
+cd && cd Plasma-6.5.2
+wget -O qtspeech-6.10.1.tar.gz https://github.com/qt/qtspeech/archive/refs/tags/v6.10.1.tar.gz
+tar -xf qtspeech-6.10.1.tar.gz
+cd qtspeech-6.10.1
+mkdir build && cd build
+cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux   -DBUILD_TESTING=OFF -G Ninja
+make -j$(nproc)
+make install
+ninja install
+```
+
+# ktexteditor
 ```
 cd && cd Plasma-6.5.2
 
@@ -527,7 +454,7 @@ make -j$(nproc)
 make install
 ```
 
-# SPIRV-Tools (ignore: termux-package)
+# SPIRV-Tools
 ```
 cd && cd Plasma-6.5.2
 git clone --recursive https://github.com/KhronosGroup/SPIRV-Tools.git
@@ -539,7 +466,7 @@ make -j$(nproc)
 make install
 ```
 
-# kdeclarative (ignore: termux-package)
+# kdeclarative
 ```
 cd && cd Plasma-6.5.2
 
@@ -554,7 +481,7 @@ make -j$(nproc)
 make install
 ```
 
-# baloo (ignore: termux-package)
+# baloo
 ```
 cd && cd Plasma-6.5.2
 
@@ -569,7 +496,7 @@ make -j$(nproc)
 make install
 ```
 
-# baloo widgets (ignore: termux-package)
+# baloo widgets
 ```
 cd && cd Plasma-6.5.2
 wget -O baloo-widgets-25.08.3.tar.gz https://github.com/KDE/baloo-widgets/archive/refs/tags/v25.08.3.tar.gz
@@ -581,7 +508,7 @@ make -j$(nproc)
 make install
 ```
 
-# kuserfeedback (ignore: termux-package)
+# kuserfeedback
 ```
 cd && cd Plasma-6.5.2
 wget -O kuserfeedback-6.22.0.tar.gz https://github.com/KDE/kuserfeedback/archive/refs/tags/v6.22.0.tar.gz
@@ -593,6 +520,17 @@ make -j$(nproc)
 make install
 ```
 
+# Qtsensors
+```
+cd && cd Plasma-6.5.2
+wget -O qtsensors-6.10.1.tar.gz https://github.com/qt/qtsensors/archive/refs/tags/v6.10.1.tar.gz
+tar -xf qtsensors-6.10.1.tar.gz
+cd qtsensors-6.10.1
+mkdir build && cd build
+cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux   -DBUILD_TESTING=OFF  -G Ninja
+ninja -j$(nproc)
+ninja install
+```
 
 # kglobalacceld
 ```
@@ -618,7 +556,7 @@ make -j$(nproc)
 make install
 ```
 
-# kglobalaccel (ignore: termux-package)
+# kglobalaccel
 ```
 cd && cd Plasma-6.5.2
 git clone https://github.com/KDE/kglobalaccel.git
@@ -629,7 +567,7 @@ make -j$(nproc)
 make install
 ```
 
-# Kholidays (ignore: termux-package)
+# Kholidays
 ```
 cd && cd Plasma-6.5.2
 wget -O kholidays-6.22.0.tar.gz https://github.com/KDE/kholidays/archive/refs/tags/v6.22.0.tar.gz
@@ -653,7 +591,7 @@ make -j$(nproc)
 make install
 ```
 
-# wayland-protocol (ignore: termux-package)
+# wayland protocol
 ```
 cd && cd Plasma-6.5.2
 git clone https://gitlab.freedesktop.org/wayland/wayland-protocols.git
@@ -664,7 +602,7 @@ ninja -j$(nproc)
 ninja install
 ```
 
-# kscreenlocker
+# kscreenlocker 
 ```
 cd && cd Plasma-6.5.2
 git clone https://invent.kde.org/plasma/kscreenlocker.git
@@ -695,17 +633,26 @@ cmake .. -DCMAKE_INSTALL_PREFIX=$PREFIX -DCMAKE_SYSTEM_NAME=Linux
 make -j$(nproc) && make install
 ```
 
-# Kwin_X11
+# kwin
 ```
 cd && cd Plasma-6.5.2
+
+pkg in xwayland 
+pkg in libxcvt libdisplay-info libwayland-protocols
+```
+
+# Kwin_X11
+```
 tar -xf kwin-x11-6.5.2.tar.xz
 cd kwin-x11-6.5.2
+
 mkdir build && cd build
 ```
 ## ⚠️ update file
 ```
 nano ../CMakeLists.txt
 #find and comment "find_package(UDev)"
+#save it
 ```
 ## ⚠️ update file
 ```
@@ -733,6 +680,8 @@ PUBLIC
         KF6::WindowSystem
         epoxy::epoxy
         android-shmem
+        
+#save it
 ```
 ## ⚠️ update file
 ```
@@ -758,6 +707,7 @@ set(kcm_libs
     KF6::XmlGui
     android-shmem
 )
+#save it
 ```
 ## ⚠️ update file
 ```
@@ -781,7 +731,7 @@ cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE
 make -j$(nproc)
 make install
 ```
-# Knewstuff (ignore: termux-package)
+# Knewstuff
 ```
 cd && cd Plasma-6.5.2
 wget -O knewstuff-6.22.0.tar.gz https://github.com/KDE/knewstuff/archive/refs/tags/v6.22.0.tar.gz
@@ -796,41 +746,15 @@ make install
 # AppstreamQt
 ```
 cd && cd Plasma-6.5.2
+
+pkg in itstool
+pip install --upgrade setuptools
+
 git clone https://github.com/ximion/appstream.git
 cd appstream
-mkdir build && cd build
-```
-## ⚠️ update file
-```
-nano ../data/meson.build
-# find and comment below
-#metainfo_i18n = i18n.itstool_join(
-#    input:  metainfo_with_relinfo,
-#    output: 'org.freedesktop.appstream.cli.metainfo.xml',
-#    mo_targets: i18n_result[0],
-#    its_files: [join_paths(meson.current_source_dir(), 'its', 'metainfo.its')],
-#    install: true,
-#    install_dir: metainfo_dir,
-#)
-
-#test('as-validate_metainfo.cli',
-#    ascli_exe,
-#    args: ['validate',
-#           '--pedantic',
-#           '--no-net',
-#           metainfo_i18n]
-#)
-```
-```
-meson setup ..   --prefix=$PREFIX   -Dqt=true   -Dvapi=false   -Ddocs=false   -Dapidocs=false -Dgir=true  -Dsystemd=false -Dstemming=false
+meson setup build   --prefix=$PREFIX   -Dqt=true   -Dvapi=false   -Ddocs=false   -Dapidocs=false -Ddocs=false -Dgir=true  -Dsystemd=false -Dstemming=false
+cd build
 ninja -j$(nproc)
-```
-## ⚠️ if this error
-```
-#ERROR: Destination '/data/data/com.termux/files/usr/lib/libappstream.so' already exists and is not a symlink
-rm /data/data/com.termux/files/usr/lib/libappstream.so
-```
-```
 ninja install
 ```
 
@@ -856,7 +780,6 @@ mkdir build && cd build
 ```
 nano ../CMakeLists.txt
 #find and replace find_package(KWinDBusInterface CONFIG REQUIRED) to find_package(KWinX11DBusInterface CONFIG REQUIRED)"
-
 #find and comment find_package(UDev REQUIRED)"
 #find and comment find_package(PolkitQt6-1)"
 #find and comment find_package(KSysGuard ${PROJECT_DEP_VERSION} CO.....
@@ -873,12 +796,12 @@ nano ../kcms/CMakeLists.txt
 nano ../kcms/region_language/localegenhelper/CMakeLists.txt
 # find and comment  "PolkitQt6-1::Core" 
 ```
-## ⚠️ update file (ignore)
+## ⚠️ update file
 ```
 nano ../devicenotifications/CMakeLists.txt
 # find and comment "UDev::UDev"
 ```
-## ⚠️ update file (ignore)
+## ⚠️ update file
 ```
 nano ../kcms/region_language/CMakeLists.txt
 # find and comment exampleutility.cpp exampleutility.h
@@ -977,7 +900,7 @@ make -j$(nproc)
 make install
 ```
 
-# pluseaudioQt (ignore: termux-package)
+# KpluseaudioQt
 ```
 cd && cd Plasma-6.5.2
 wget -O pulseaudio-qt-1.7.0.tar.gz https://github.com/KDE/pulseaudio-qt/archive/refs/tags/v1.7.0.tar.gz
@@ -1003,6 +926,9 @@ make install
 # plasma-welcome
 ```
 cd && cd Plasma-6.5.2
+
+pkg i kirigami-addons
+
 tar -xf plasma-welcome-6.5.2.tar.xz
 cd plasma-welcome-6.5.2
 mkdir build && cd build
@@ -1011,7 +937,7 @@ make -j$(nproc)
 make install
 ```
 
-# purpose (ignore: termux-package)
+# purpose
 ```
 cd && cd Plasma-6.5.2
 git clone https://github.com/KDE/purpose.git
@@ -1023,7 +949,7 @@ make install
 ```
 
 # plasma-browser-integration
-### if build issue then without rebuild just build and install -> plasma-workspace > make -j$(nproc) && make install
+## if build issue then without rebuild just build and install -> plasma-workspace > make -j$(nproc) && make install
 ```
 cd && cd Plasma-6.5.2
 tar -xf plasma-browser-integration-6.5.2.tar.xz
@@ -1056,7 +982,7 @@ make -j$(nproc)
 make install
 ```
 
-# qqc2-desktop-style (ignore: termux-package)
+# qqc2-desktop-style
 ```
 cd && cd Plasma-6.5.2
 git clone https://github.com/KDE/qqc2-desktop-style.git
@@ -1077,11 +1003,10 @@ mkdir build && cd build
 ## ⚠️ update file
 ```
 nano ../CMakeLists.txt
-#find and replace find_package(KWinDBusInterface CONFIG REQUIRED) to find_package(KWinX11DBusInterface CONFIG REQUIRED)
-
-#find and comment pkg_check_modules(LIBWACOM libwacom REQUIRED
-#find and comment find_package(KSysGuard CONFIG REQUIRED)
 #find and comment find_package(UDev)
+#find and comment find_package(KSysGuard CONFIG REQUIRED)
+#find and comment pkg_check_modules(LIBWACOM libwacom REQUIRED
+#find and replace find_package(KWinDBusInterface CONFIG REQUIRED) to find_package(KWinX11DBusInterface CONFIG REQUIRED)
 ```
 ## ⚠️ update file
 ```
@@ -1095,7 +1020,7 @@ nano ../kcms/CMakeLists.txt
 ```
 ## ⚠️ update file (ignore)
 ```
-nano ../kcms/tablet/CMakeLists.txt
+#nano ../kcms/tablet/CMakeLists.txt
 #find and comment PkgConfig::LIBWACOM
 ```
 ## ⚠️ update file
@@ -1147,17 +1072,6 @@ make install
 cd && cd Plasma-6.5.2
 tar -xf systemsettings-6.5.2.tar.xz
 cd systemsettings-6.5.2
-mkdir build && cd build
-cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux   -DBUILD_TESTING=OFF -DBUILD_WITH_QT6=ON
-make -j$(nproc)
-make install 
-```
-
-# discover (Otional: No faltpack support, other options works)
-```
-cd && cd Plasma-6.5.2
-tar -xf discover-6.5.2.tar.xz
-cd discover-6.5.2
 mkdir build && cd build
 cmake ..   -DCMAKE_INSTALL_PREFIX=$PREFIX   -DCMAKE_BUILD_TYPE=Release   -DCMAKE_SYSTEM_NAME=Linux   -DBUILD_TESTING=OFF -DBUILD_WITH_QT6=ON
 make -j$(nproc)
